@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Typography, Button, Form, message, Input, Icon } from 'antd'
 import Dropzone from 'react-dropzone';
 import Axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const { TextArea } = Input;
 const { Title } = Typography;
@@ -19,15 +20,24 @@ const CategoryOptions = [
 ]
 
 
-function VideoUploadPage() {
+function VideoUploadPage(props) {
 
     const [VideoTitle, setVideoTitle] = useState("");
     const [Description, setDescription] = useState("");
     const [Private, setPrivate] = useState(0);
-    const [Category, setCategory] = useState("Film & Animation ");
+    const [Category, setCategory] = useState("Film & Animation");
     const [FilePath, setFilePath] = useState("");
     const [ThumbnailPath, setThumbnailPath] = useState("");
     const [Duration, setDuration] = useState("")
+
+    // react-redux 에서 useSelector Hook 사용하기 
+    // 이 Hook 을 통하여 우리는 리덕스 스토어의 상태에 접근 할 수 있습니다.
+    // 모든 page에 접근할때 마다 hoc폴더의 auth.js로 인해 인증 절차를 거친다.
+    // 그러므로 페이지에 접근할 때마다 dispatch가 작동해 redux state가 update된다.
+    // 결국 useSelector를 사용해 dispatch auth() action이 전달한 값들을 접근 할 수있다.
+    const user = useSelector(state => state.user);
+   
+
 
     const onChangeTitle = (e) => {
         setVideoTitle(e.target.value);
@@ -81,6 +91,37 @@ function VideoUploadPage() {
             })
     }
 
+    const onSubmit = (e) => {
+        e.preventDefault();
+        
+      
+        const variable = {
+            writer :  user.userData._id,
+            title : VideoTitle,
+            description : Description,
+            privacy : Private,
+            filePath : FilePath,
+            category : Category,
+            duration : Duration,
+            thumbnail : ThumbnailPath
+        }
+
+        Axios.post('/api/video/uploadVideo', variable)
+            .then(res => {
+                if(res.data.success){
+                    message.success('성공적으로 업로드를 했습니다');
+                    
+                    setTimeout(() => {
+                        props.history.push('/')
+                    }, 3000);
+
+                }else{
+                    alert('비디오 업로드에 실패했습니다.');
+                }
+            })
+
+    }
+
   
     return (
         <div style={{ maxWidth:'700px', margin : '2rem auto ' }}>
@@ -88,7 +129,7 @@ function VideoUploadPage() {
                 <Title level={2} >Upload Video</Title>
             </div>
            
-           <Form onSubmit>
+           <Form onSubmit = { onSubmit }>
                <div style={{ display:'flex', justifyContent:'space-between'}}>
                     {/* Drop Zone */}
                         <Dropzone
@@ -154,14 +195,14 @@ function VideoUploadPage() {
 
                 <select onChange= { onCategoryChange }>
                     { CategoryOptions.map((item, index) => (
-                         <option key={index} value={item.value}>{item.label}</option>
+                         <option key={index} value={item.lable}>{item.label}</option>
                     ))}
                 </select>
                 
                 <br />
                 <br />  
 
-                <Button type="primary" size="large" onClick>
+                <Button type="primary" size="large" onClick = { onSubmit }>
                         Submit
                 </Button>
 

@@ -3,8 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const ffmpeg = require('fluent-ffmpeg');
 
-const { User } = require("../models/User");
-const { auth } = require("../middleware/auth");
+const { Video } = require('../models/Video');
 
 // STORAGE MULTER CONFIG
 let storage = multer.diskStorage({
@@ -50,13 +49,30 @@ router.post('/uploadfiles', (req, res) => {
                 err
             })
         }
-
+        
         return res.json({
             success : true,
             url : res.req.file.path,
             fileName : res.req.file.filename
         })
     })
+})
+
+router.post('/uploadVideo', (req, res) => {
+    // 비디오 정보들을 저장한다
+    
+    const video = new Video(req.body);
+
+    video.save((err, doc) => {
+        if(err){
+            return res.status(400).send(err);
+        }
+
+        return res.status(200).json({
+            success : true
+        })
+    })
+    
 })
 
 router.post('/thumbnail', (req, res) => {
@@ -76,7 +92,7 @@ router.post('/thumbnail', (req, res) => {
         // filenames는 thumbnail의 filename을 만드는 작업
         .on('filenames', function( filenames ){
             console.log('Will generate ' + filenames.join(', '));
-            console.log(filenames);
+            
             
             // 콜백함수의 매개변수인 filenames을 이용해 filePath를 만듬
             filePath = "uploads/thumbnails/" + filenames[0];
@@ -110,5 +126,6 @@ router.post('/thumbnail', (req, res) => {
             filename : 'thumbnail-%b.png'
         })
 })
+
 
 module.exports = router;
