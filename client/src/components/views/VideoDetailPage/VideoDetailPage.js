@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Row, Col, List, Avatar } from 'antd';
 import Axios from 'axios';
+import SideVideo from './Section/SideVideo';
+
 
 function VideoDetailPage(props) {
     
@@ -16,6 +18,7 @@ function VideoDetailPage(props) {
             .then(res => {
                 if(res.data.success){
                     setVideoDetail(res.data.video)
+                  
                 }else{
                     alert('비디오 정보를 가져오는데 실패했습니다.');
                 }
@@ -26,7 +29,7 @@ function VideoDetailPage(props) {
   if(VideoDetail.writer){
     return (
         // gutter 행과 행 사이의 간격
-       <Row gutter={[16, 16]}>
+       <Row >
            <Col lg={18} xs={24}>
             <div style={{ width : '100%', padding : '3rem 4rem'}}>
                     <video style={{ width : '100%'} } src={`http://localhost:5000/${VideoDetail.filePath}`} controls />
@@ -50,7 +53,7 @@ function VideoDetailPage(props) {
            </Col>
 
            <Col lg={6} xs={24} >
-                Side Videos
+                <SideVideo id={ id } />
            </Col>
 
        </Row>

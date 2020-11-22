@@ -4,7 +4,7 @@ import { Card, Icon, Avatar, Col, Typography, Row} from 'antd';
 import { Link } from 'react-router-dom'; 
 import Axios from 'axios';
 import moment from 'moment';
-import '../../../index.css'
+import '../../../index.css';
 const { Title } = Typography;
 const { Meta } = Card;
 

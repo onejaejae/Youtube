@@ -9,7 +9,6 @@ import { Link } from 'react-router-dom'
 
 function RightMenu(props) {
   const user = useSelector(state => state.user)
-  console.log(user)
 
   const logoutHandler = () => {
     axios.get(`${USER_SERVER}/logout`).then(response => {
