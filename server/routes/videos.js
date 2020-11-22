@@ -39,23 +39,18 @@ let storage = multer.diskStorage({
 // single안의 값 = formData의 append에서 key 값을 넣는다
 const upload = multer({ storage : storage}).single("file");
 
-router.post('/uploadfiles', (req, res) => {
+router.post('/uploadfiles', upload, (req, res) => {
    
+    // single 미들웨어를 라우터 미들웨어 앞에 넣어두면, multer 설정에 따라 파일 업로드 후
+    // req.file 객체가 생성된다.
+    // 업로드 성공 시 결과는 req.file 객체 안에 들어있다 
+
     // 비디오를 서버에 저장한다.
-    upload(req, res, err => {
-        if(err){
-            return res.json({
-                success : false,
-                err
-            })
-        }
-        
-        return res.json({
-            success : true,
-            url : res.req.file.path,
-            fileName : res.req.file.filename
-        })
-    })
+   return res.status(200).json({
+       success : true,
+       url : req.file.path,
+       fileName : req.file.filename
+   })
 })
 
 router.post('/uploadVideo', (req, res) => {
@@ -91,6 +86,7 @@ router.post('/thumbnail', (req, res) => {
     ffmpeg(req.body.url)
         // filenames는 thumbnail의 filename을 만드는 작업
         .on('filenames', function( filenames ){
+            console.log(filenames)
             console.log('Will generate ' + filenames.join(', '));
             
             
@@ -127,5 +123,22 @@ router.post('/thumbnail', (req, res) => {
         })
 })
 
+router.get('/getVideos', (req, res) => {
+    // 비디오를 DB에서 가져와서 클라이언트에 보낸다
+    // populate를 해줘야 ref 한 database의 모든 정보를 가져올 수 있다!!!
+    
+    Video.find()
+        .populate('writer')
+        .exec((err, videos) => {
+            if(err){
+                return res.status(404).send(err);
+            }
+
+            return res.status(200).json({
+                success : true,
+                database : videos
+            })
+        })
+})
 
 module.exports = router;

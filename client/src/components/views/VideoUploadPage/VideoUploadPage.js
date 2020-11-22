@@ -21,6 +21,7 @@ const CategoryOptions = [
 
 
 function VideoUploadPage(props) {
+   
 
     const [VideoTitle, setVideoTitle] = useState("");
     const [Description, setDescription] = useState("");
@@ -36,9 +37,7 @@ function VideoUploadPage(props) {
     // 그러므로 페이지에 접근할 때마다 dispatch가 작동해 redux state가 update된다.
     // 결국 useSelector를 사용해 dispatch auth() action이 전달한 값들을 접근 할 수있다.
     const user = useSelector(state => state.user);
-   
-
-
+    
     const onChangeTitle = (e) => {
         setVideoTitle(e.target.value);
     }
@@ -62,6 +61,7 @@ function VideoUploadPage(props) {
             header : { 'content-type' : 'multipart/form-data'}
         }
         formData.append("file", files[0]);
+      
         
         Axios.post('/api/video/uploadfiles', formData, config)
             .then(res => {
