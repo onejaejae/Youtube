@@ -5,6 +5,7 @@ const ffmpeg = require('fluent-ffmpeg');
 
 const { Video } = require('../models/Video');
 
+
 // STORAGE MULTER CONFIG
 let storage = multer.diskStorage({
     // 위 설정을 실제로 활용하기 위해서는 서버에 uploads 폴더가 꼭 존재해야한다 
@@ -146,7 +147,7 @@ router.post('/getVideoDetail', (req, res) => {
         .populate('writer')
         .exec((err, video) => {
             if(err){
-                res.status(400).send(err)
+                res.status(404).send(err)
             }
 
             return res.status(200).json({
