@@ -9,7 +9,7 @@ function Subscribe( { id } ) {
     const [Subscribed, setSubscribed] = useState(false)
 
 
-    const { userData : { _id }} = useSelector(state => state.user)
+    const { userData : { _id }} = useSelector(state => state.user);
     
     useEffect(() => {
         const variable = {
@@ -39,15 +39,51 @@ function Subscribe( { id } ) {
         
     }, [])
 
+    const onSubscribe = () => {
+        const variable = {
+            userTo : id,
+            userFrom : _id
+        }
+
+        // 구독 취소
+        if(Subscribed){ 
+
+            Axios.post('/api/subscribe/unSubscribe', variable)
+                .then(res => {
+                    if(res.data.success){
+                        setSubscribeNumber(SubscribeNumber - 1);
+                        setSubscribed(!Subscribed);
+                    }else{
+                        alert('구독 취소에 실패했습니다.');
+                    }
+                })
+            
+        }
+        // 구독
+        else{ 
+           
+            Axios.post('/api/subscribe/Subscribe', variable)
+                .then(res => {
+                    if(res.data.success){
+                        setSubscribeNumber(SubscribeNumber + 1);
+                        setSubscribed(!Subscribed);
+                    }else{
+                        alert('구독에 실패했습니다.');
+                    }
+                })
+        }
+      
+    }
+
     return (
         <div>
             <button
                 style={{
-                    backgroundColor : `${ Subscribe ? '#CC0000' : '#AAAAAA' }`, borderRadius : '4px',
+                    backgroundColor : `${ Subscribed ? '#AAAAAA' : '#CC0000' }`, borderRadius : '4px',
                     color : 'white', padding : '10px 16px',
                     fontWeight : '500', fontSize : '1rem', textTransform : 'uppercase'
                 }}
-                onClick
+                onClick = { onSubscribe }
             >
                     {SubscribeNumber} {Subscribed ? 'Subscribed' : 'Subscribe'}
                 </button>
