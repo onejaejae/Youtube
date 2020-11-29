@@ -12,18 +12,18 @@ const { Meta } = Card;
 
 function SubscriptionPage(props) {
     const [Video, setVideo] = useState([])
-   
+  
     useEffect(() => {
         const variable = {
             userFrom : localStorage.getItem('userId')
         }
 
+     
+
         Axios.post('/api/video/getSubscritionVideos', variable)
             .then(res => {
                 if(res.data.success){
                     setVideo(res.data.video)
-                    console.log(res.data)
-                    
                 }else{
                     alert('비디오 가져오기를 실패했습니다.');
                 }
@@ -65,12 +65,14 @@ function SubscriptionPage(props) {
     })
 
     return (
+      
         <div style={{ width : '85%', margin : '3rem auto'}}>
             <Title level={2}> Recommended</Title>
             <hr />
             <Row gutter={[32, 16]}>
                 { renderCards }
             </Row>
+          
         </div>
     )
 }

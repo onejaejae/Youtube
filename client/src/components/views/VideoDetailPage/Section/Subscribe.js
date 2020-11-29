@@ -10,7 +10,7 @@ function Subscribe( { id } ) {
 
 
     const { userData : { _id }} = useSelector(state => state.user);
-  
+
     
     useEffect(() => {
         const variable = {

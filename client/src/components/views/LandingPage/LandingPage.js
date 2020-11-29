@@ -21,7 +21,6 @@ function LandingPage() {
                     alert('비디오 가져오기를 실패했습니다.');
                 }
             })
-      
     }, [])
 
     const renderCards = Video.map((video, index) => {
@@ -31,14 +30,14 @@ function LandingPage() {
         var seconds = Math.floor((video.duration - minutes * 60));
 
         return <Col lg={6} md={8} xs={24}>
-        <Link to={`/video/post/${video._id}`}>
+        <a href={`/video/post/${video._id}`}>
             <div style={{ position : 'relative'}}>
                 <img style={{ width : '100%'}} src={`http://localhost:5000/${video.thumbnail}`} alt="thumbnail"/>
                 <div className = "duration">
                     <span>{ minutes } : { seconds}</span>
                 </div>
             </div>
-        </Link>
+        </a>
         <br />
         <Meta
             avatar={
