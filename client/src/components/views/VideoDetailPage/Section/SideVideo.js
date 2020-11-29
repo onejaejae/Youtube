@@ -22,7 +22,7 @@ function SideVideo({ id }) {
     const seconds = Math.floor(video.duration - (minutes*60));
     
     if (id !== video._id) {
-        console.log(video.views)
+  
       return (
         <div
           key={ index }

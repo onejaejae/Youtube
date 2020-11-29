@@ -9,8 +9,9 @@ function Subscribe( { id } ) {
     const [Subscribed, setSubscribed] = useState(false)
 
 
-    const { userData : { _id }} = useSelector(state => state.user);
+    // const { userData : { _id }} = useSelector(state => state.user);
 
+    const _id = localStorage.getItem('userId');
     
     useEffect(() => {
         const variable = {
@@ -48,7 +49,6 @@ function Subscribe( { id } ) {
 
         // 구독 취소
         if(Subscribed){ 
-
             Axios.post('/api/subscribe/unSubscribe', variable)
                 .then(res => {
                     if(res.data.success){

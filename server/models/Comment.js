@@ -12,7 +12,7 @@ const CommentSchema = mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         ref : Video
     },
-    // 내가 대댓글 남긴 유저 정보(내가 첫댓글인 경우 데이터 없다)
+    
     responseTo : {
         type : mongoose.Schema.Types.ObjectId,
         ref : User

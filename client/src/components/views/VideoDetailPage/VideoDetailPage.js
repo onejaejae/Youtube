@@ -8,6 +8,7 @@ import Comment from "./Section/Comment";
 
 function VideoDetailPage(props) {
   const [VideoDetail, setVideoDetail] = useState([]);
+  const [Comments, setComments] = useState([]);
 
   
   const id = props.match.params.id;
@@ -23,8 +24,27 @@ function VideoDetailPage(props) {
         alert("비디오 정보를 가져오는데 실패했습니다.");
       }
     });
+
+    // 해당 비디오의 모든 댓글을 가져온 뒤
+    // state의 데이터를 담아 하위 컴포넌트에 넘겨준다.
+    Axios.post('/api/comment/getComments', variable)
+      .then(res => {
+        if(res.data.success){
+          setComments(res.data.comments)
+        }else{
+          alert('댓글 정보를 가져오는데 실패했습니다.');
+        }
+        
+      })
     
   }, []);
+
+// videoDetail에서 useState를 통해 해당 비디오의 모든 댓글을 가져오고 뿌려준다
+// 우리가 댓글을 다는 component는 comment, singlecomment component이기 때문에
+// 댓글을 달면 하위 컴포넌트에서 부모 컴포넌트에 저장된 댓글을 업데이트해서 rerender되게 한다.
+  const refreshFunction = (newComment) => {
+    setComments(Comments.concat(newComment))
+  }
 
   if (VideoDetail.writer) {
     return (
@@ -58,8 +78,7 @@ function VideoDetailPage(props) {
             )}
 
             {/*  Comments */}
-                <Comment PostId={ id } />
-
+              <Comment refreshFunction={ refreshFunction } commentList={Comments} PostId={id}/>
           </div>
         </Col>
 

@@ -4,6 +4,7 @@ const { Comment } = require('../models/Comment');
 
 router.post('/saveComment', (req, res) => {
     const comment = new Comment(req.body);
+    console.log(req.body)
 
     // save를 사용할 경우 populate를 사용하지 못하므로
     // 그에 대한 대안으로 이와 같은 로직을 구성했다
@@ -29,6 +30,24 @@ router.post('/saveComment', (req, res) => {
 
        
     })
+})
+
+router.post('/getComments', (req, res) => {
+   
+    Comment.find({'PostId' : req.body.id})
+        .populate('writer')
+        .exec((err, comments) => {
+            if(err) return res.status(400).json({
+                success : false,
+                err
+            })
+        
+
+            return res.status(200).json({
+                success : true,
+                comments
+            })
+        })
 })
 
 module.exports = router;
