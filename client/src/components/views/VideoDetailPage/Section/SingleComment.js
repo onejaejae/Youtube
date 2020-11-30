@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Comment, Avatar, Button, Input } from "antd";
 import Axios from "axios";
+import LikeDislikes from "./LikeDislikes";
 
 const { TextArea } = Input;
 
@@ -40,10 +41,8 @@ function SingleComment({ comment, refreshFunction }) {
   }
 
   const actions = [
-    <span onClick={openReply} key="comment-basic-reply-to">
-      {" "}
-      Reply to{" "}
-    </span>,
+    <LikeDislikes commentId={ comment._id }/>,
+    <span onClick={ openReply } key="comment-basic-reply-to">Reply to</span>
   ];
 
   return (
@@ -51,7 +50,7 @@ function SingleComment({ comment, refreshFunction }) {
       <Comment 
             actions={actions} 
             author = {comment.writer.name}
-            avatar={<Avatar src={comment.writer.image} alt />} 
+            avatar={<Avatar src={comment.writer.image} alt="image" />} 
             content = { comment.content }
      />
       {OpenReply && (

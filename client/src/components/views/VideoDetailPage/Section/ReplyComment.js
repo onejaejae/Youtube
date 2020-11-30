@@ -29,6 +29,7 @@ function ReplyComment({ commentList, parentCommentId, refreshFunction}) {
             
             <React.Fragment>
                 {   
+                // 모든 댓글 중에서 comment.responseTo가 있는 댓글 중 parentCommentId와 같은것들만
                     comment.responseTo === parentCommentId &&
                     <div style={{ width:'80%', marginLeft : '40px'}}>
                         <SingleComment refreshFunction={ refreshFunction } comment={ comment }/>

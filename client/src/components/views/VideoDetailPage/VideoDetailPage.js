@@ -5,6 +5,7 @@ import SideVideo from "./Section/SideVideo";
 import Subscribe from "./Section/Subscribe";
 import { useSelector } from "react-redux";
 import Comment from "./Section/Comment";
+import LikeDislikes from "./Section/LikeDislikes";
 
 function VideoDetailPage(props) {
   const [VideoDetail, setVideoDetail] = useState([]);
@@ -68,7 +69,9 @@ function VideoDetailPage(props) {
                 />
               </List.Item>
             ) : (
-              <List.Item actions={[<Subscribe id={VideoDetail.writer._id} />]}>
+              // 동영상의 좋아요 싫어요 기능과 댓글의 좋아요 싫어요 기능을 구분해주기 위해
+              // 동영상용에 video property를 전달해 구분하였다.
+              <List.Item actions={[ <LikeDislikes video videoId={ id } />, <Subscribe id={VideoDetail.writer._id} />]}>
                 <List.Item.Meta
                   avatar={<Avatar src={VideoDetail.writer.image} />}
                   title={VideoDetail.title}

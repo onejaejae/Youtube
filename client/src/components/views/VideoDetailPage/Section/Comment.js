@@ -49,7 +49,7 @@ function Comment({ PostId, commentList, refreshFunction }) {
                     // div 같은 역할이라고 생각하면 된다.
                     <React.Fragment>
                         <SingleComment refreshFunction={ refreshFunction } comment={ comment }  />
-                        <ReplyComment refreshFunction={ refreshFunction }commentList={ commentList } parentCommentId={comment._id} />
+                        <ReplyComment refreshFunction={ refreshFunction } commentList={ commentList } parentCommentId={ comment._id } />
                     </React.Fragment>
                 )
              ))}
@@ -61,7 +61,7 @@ function Comment({ PostId, commentList, refreshFunction }) {
                 <textarea 
                     style={{ width : '100%', borderRadius : '5px' }}
                     onChange = { handleChange }
-                    value={Comment}
+                    value={ Comment }
                     placeholder="코멘트를 작성해 주세요"
                 />
                 <br />
